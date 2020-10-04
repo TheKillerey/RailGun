@@ -1,23 +1,9 @@
 ﻿using Fantome.Libraries.League.Helpers.BIN;
 using Fantome.Libraries.League.Helpers.Structures;
 using Fantome.Libraries.League.IO.BIN;
-using ImageMagick;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using IOPath = System.IO.Path;
 
 namespace Railgun.Utilities
 {
@@ -27,30 +13,25 @@ namespace Railgun.Utilities
         {
             TreeViewItem mainNode = new TreeViewItem()
             {
-                Header = IOPath.GetFileName(binName)
+                Header = System.IO.Path.GetFileName(binName)
             };
 
             foreach (BINEntry entry in bin.Entries)
             {
-                mainNode.Items.Add(GenerateEntryNode(entry));
+                TreeViewItem entryNode = new TreeViewItem()
+                {
+                    Header = entry.GetPath() + " : " + BINGlobal.GetClass(entry.Class)
+                };
+
+                foreach (BINValue value in entry.Values)
+                {
+                    entryNode.Items.Add(GenerateValueNode(value));
+                }
+
+                mainNode.Items.Add(entryNode);
             }
 
             return mainNode;
-        }
-
-        private static TreeViewItem GenerateEntryNode(BINEntry entry)
-        {
-            TreeViewItem entryNode = new TreeViewItem()
-            {
-                Header = entry.GetPath() + " : " + BINGlobal.GetClass(entry.Class)
-            };
-
-            foreach (BINValue value in entry.Values)
-            {
-                entryNode.Items.Add(GenerateValueNode(value));
-            }
-
-            return entryNode;
         }
 
         private static TreeViewItem GenerateValueNode(BINValue value, bool createFieldProperty = true)
@@ -209,11 +190,11 @@ namespace Railgun.Utilities
             }
             else if (value.Type == BINValueType.Color)
             {
-                MagickColor color = value.Value as MagickColor;
+                byte[] color = value.Value as byte[];
 
                 stackPanel.Children.Add(new TextBlock()
                 {
-                    Text = string.Format("[ {0}, {1}, {2}, {3} ]", color.R, color.G, color.B, color.A)
+                    Text = string.Format("[ {0}, {1}, {2}, {3} ]", color[0], color[1], color[2], color[3])
                 });
             }
             else if (value.Type == BINValueType.String)
