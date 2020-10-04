@@ -100,6 +100,10 @@ namespace Railgun.Utilities
                 entryNode.Header = BINGlobal.GetField(value.Property);
             }
 
+            else if  (value.Type == BINValueType.Container2)
+            {
+                entryNode.Header = BINGlobal.GetField(value.Property);
+            }
 
             return entryNode;
         }
@@ -157,6 +161,10 @@ namespace Railgun.Utilities
                 stackPanel.Children.Add(new TextBlock() { Text = ((ulong)value.Value).ToString() });
             }
             else if (value.Type == BINValueType.Float)
+            {
+                stackPanel.Children.Add(new TextBlock() { Text = ((float)value.Value).ToString() });
+            }
+            else if (value.Type == BINValueType.Container2)
             {
                 stackPanel.Children.Add(new TextBlock() { Text = ((float)value.Value).ToString() });
             }
@@ -296,6 +304,10 @@ namespace Railgun.Utilities
                 {
                     return ((ushort)keyValue.Value).ToString();
                 }
+                else if (map.KeyType == BINValueType.Container2)
+                {
+                    return ((ushort)keyValue.Value).ToString();
+                }
                 else if (map.KeyType == BINValueType.UInt32)
                 {
                     return ((uint)keyValue.Value).ToString();
@@ -321,7 +333,7 @@ namespace Railgun.Utilities
 
         private static bool IsPrimitiveValue(BINValueType type)
         {
-            if (type != BINValueType.Container && type != BINValueType.Structure && type != BINValueType.Embedded && type != BINValueType.Map && type != BINValueType.Optional)
+            if (type != BINValueType.Container2 && type != BINValueType.Structure && type != BINValueType.Embedded && type != BINValueType.Map && type != BINValueType.Optional)
             {
                 return true;
             }

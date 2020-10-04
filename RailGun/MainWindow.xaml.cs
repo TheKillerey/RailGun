@@ -4,6 +4,7 @@ using Fantome.Libraries.League.IO.BIN;
 using Railgun.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -65,6 +66,12 @@ namespace Railgun
             {
                 string fieldName = fieldNameRaw.Split(' ')[1];
                 fieldNames.Add(Cryptography.FNV32Hash(fieldName), fieldName);
+                
+                if(fieldNames.ContainsKey(607049692))
+
+                {
+                    return;
+                }
             }
 
             BINGlobal.SetHashmap(new Dictionary<uint, string>(), classNames, fieldNames);
